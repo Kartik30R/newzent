@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "875741923980",
+    "project_id": "newzent-80c4f",
+    "storage_bucket": "newzent-80c4f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875741923980:android:bf251e69e2de855a4f89a9",
+        "android_client_info": {
+          "package_name": "com.example.newzent"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbz5psYEBd632WC8F22MDtHD4436oRfJE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
