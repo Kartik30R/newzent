@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:newzent/view/screens/main_screen.dart';
-import 'package:newzent/view/screens/welcome_page.dart';
+import 'package:newzent/view/screens/app/main_screen.dart';
+import 'package:newzent/view/screens/auth/welcome_page.dart';
 import 'package:newzent/view_model/controllers/auth_controller.dart';
 
 class ProfileScreen extends StatelessWidget {

@@ -2,8 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newzent/resources/theme/app_theme.dart';
-import 'package:newzent/view/screens/main_screen.dart';
-import 'package:newzent/view/screens/welcome_page.dart';
+import 'package:newzent/view/screens/app/main_screen.dart';
+import 'package:newzent/view/screens/auth/welcome_page.dart';
 import 'package:newzent/view_model/controllers/auth_controller.dart';
 import 'package:newzent/view_model/controllers/bottom_navigation_controller.dart';
 
@@ -26,11 +26,12 @@ class MyApp extends StatelessWidget {
       }
 
       return GetMaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         themeMode: navigationController.themeMode.value,
-        home: authController.isUserLoggedIn() ? MainPage() : WelcomePage(),
+        home: authController.isUserLoggedIn() ? SafeArea(child: MainPage()) : WelcomePage(),
       );
     });
   }

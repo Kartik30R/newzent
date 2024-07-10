@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:newzent/model/news/news_model.dart';
 import 'package:newzent/resources/constants/dimension/app_dimension.dart';
 import 'package:newzent/utils/time_util.dart';
-import 'package:newzent/view/screens/article_screen.dart';
+import 'package:newzent/view/screens/app/article_screen.dart';
 
 
 class NewsTile extends StatelessWidget {

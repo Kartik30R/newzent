@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:newzent/model/news/news_model.dart';
 import 'package:newzent/repository/news_repo.dart';
-import 'package:newzent/view_model/controllers/auth_controller.dart';
 
 class FeedNewsController extends GetxController {
   final NewsRepo _newsRepo = NewsRepo();

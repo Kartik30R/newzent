@@ -33,16 +33,29 @@ class ExploreScreen extends StatelessWidget {
 
           return Scaffold(
             appBar: AppBar(
-              title: Text(
-                "Explore",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-            ),
+              elevation: 5,
+          title: SizedBox(height: 20,child: Image.asset('assets/logo.png',)),
+        ),
             body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(height: 21,),
+                     Text(
+                "Explore",
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 16),
+              const TextField(decoration: InputDecoration(
+                hintText: 
+               'search',
+               prefixIcon: Icon(Icons.search)
+              ),),
+              const SizedBox(height: 21,),
+               Text("Editor's Choice",style: Theme.of(context).textTheme.bodyMedium,),
+              const SizedBox(height: 8,),
                     CarouselSlider.builder(
                       itemCount: 5,
                       itemBuilder: (context, index, realIndex) {
@@ -69,7 +82,7 @@ class ExploreScreen extends StatelessWidget {
                     Container(
                       height: MediaQuery.of(context).size.height -
                           kToolbarHeight +
-                          700, // Adjust height accordingly
+                          700, 
                       child: TabBarView(
                         controller: tabController,
                         children: [
@@ -97,7 +110,7 @@ class ExploreScreen extends StatelessWidget {
   Widget _buildNewsList(RxList<Articles> newsList, String? category, RxBool isLoading) {
     return Obx(() {
       return isLoading.value
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : NotificationListener<ScrollNotification>(
               onNotification: (ScrollNotification scrollInfo) {
                 if (scrollInfo.metrics.pixels ==
@@ -109,13 +122,13 @@ class ExploreScreen extends StatelessWidget {
               },
               child: ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: newsList.length + 1,
                 itemBuilder: (context, index) {
                   if (index == newsList.length) {
                     return newsController.isFetchingMore.value
-                        ? Center(child: CircularProgressIndicator())
-                        : SizedBox.shrink();
+                        ? const Center(child: CircularProgressIndicator())
+                        : const SizedBox.shrink();
                   }
                   final news = newsList[index];
                   return Column(

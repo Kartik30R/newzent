@@ -1,10 +1,8 @@
-import 'dart:ffi';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:newzent/model/user/user_model.dart';
-import 'package:newzent/view/screens/interests_screen.dart';
 import 'package:newzent/view_model/controllers/user_preference.dart';
 
 class AuthController extends GetxController {
@@ -34,17 +32,18 @@ class AuthController extends GetxController {
       Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);
     }
   }
-Future<void> login(String email, String password) async {
+Future<bool> login(String email, String password) async {
   try {
     UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
     await _setUserToken(userCredential);
     user = UserModel(isLogin: true, token: await userCredential.user!.getIdToken(), uid: userCredential.user!.uid);
     pref.saveUser(user);
-    
     await _fetchInterests();
     print(interests);
+    return true;
   } catch (e) {
     Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);
+    return false;
   }
 }
 
@@ -88,5 +87,6 @@ Future<void> login(String email, String password) async {
         'interests': interests.toList(),
       });
     }
+    interests.clear();
   }
 }

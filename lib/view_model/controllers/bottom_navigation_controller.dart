@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
-import 'package:newzent/view/screens/explore_screen.dart';
-import 'package:newzent/view/screens/feed_screen.dart';
-import 'package:newzent/view/screens/main_screen.dart';
-import 'package:newzent/view/screens/profile_screen.dart';
+import 'package:newzent/view/screens/app/explore_screen.dart';
+import 'package:newzent/view/screens/app/feed_screen.dart';
+import 'package:newzent/view/screens/app/main_screen.dart';
+import 'package:newzent/view/screens/app/profile_screen.dart';
 
 class BottomNavigationController extends GetxController{
   RxInt currentIndex =0.obs;
