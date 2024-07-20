@@ -8,7 +8,7 @@ import 'package:newzent/view_model/controllers/auth_controller.dart';
 
 class InterestsScreen extends StatelessWidget {
   InterestsScreen({super.key});
-  AuthController authController = AuthController();
+  AuthController authController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Obx(
