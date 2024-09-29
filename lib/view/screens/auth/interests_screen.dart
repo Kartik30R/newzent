@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newzent/resources/constants/color/app_color.dart';
@@ -13,7 +14,7 @@ class InterestsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => Padding(
-        padding:  EdgeInsets.symmetric(vertical:AppDimension().defaultMargin),
+        padding: EdgeInsets.symmetric(vertical: AppDimension().defaultMargin),
         child: Column(
           children: [
             const SizedBox(
@@ -27,18 +28,37 @@ class InterestsScreen extends StatelessWidget {
                     children: AppString.newsTopics
                         .map(
                           (e) => Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 4.0),
                             child: FilledButton(
                               onPressed: () {
-                                authController.interests.add(e);
+                                if (authController.interests.contains(e)) {
+                                  authController.interests.remove(e);
+                                  if (kDebugMode) {
+                                    print('removed');
+                                  }
+                                } else {
+                                  authController.interests.add(e);
+                                  if (kDebugMode) {
+                                    print('added');
+                                  }
+                                }
                               },
                               style: ButtonStyle(
-                                shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),side: const BorderSide(color: AppColor.light))),
+                                  shape: WidgetStatePropertyAll(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          side: const BorderSide(
+                                              color: AppColor.light))),
                                   backgroundColor: WidgetStatePropertyAll(
                                       authController.interests.contains(e)
                                           ? AppColor.primary
                                           : Colors.transparent)),
-                              child: Text(e,style: const TextStyle(color: AppColor.light),),
+                              child: Text(
+                                e,
+                                style: const TextStyle(color: AppColor.light),
+                              ),
                             ),
                           ),
                         )
@@ -47,18 +67,37 @@ class InterestsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 16,),
+            const SizedBox(
+              height: 16,
+            ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: AppDimension().defaultMargin),
+              margin: EdgeInsets.symmetric(
+                  horizontal: AppDimension().defaultMargin),
               width: double.infinity,
               child: ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor: const WidgetStatePropertyAll(AppColor.primary),
-                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)))
-                  ),
-                  onPressed: () {
-                    authController.updateInterests();
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
+                      backgroundColor:
+                          const WidgetStatePropertyAll(AppColor.primary),
+                      shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4)))),
+                  onPressed: () async {
+                    if (authController.interests.isEmpty) {
+                      Get.snackbar(
+                        'No Selection',
+                        'Please select at least one interest.',
+                        snackPosition: SnackPosition.BOTTOM,
+                        backgroundColor: Colors.redAccent,
+                        colorText: Colors.white,
+                      );
+                    } else {
+                      authController.updateInterests();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginScreen(),
+                        ),
+                      );
+                    }
                   },
                   child: const Text('Done')),
             )
