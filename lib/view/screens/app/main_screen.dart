@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newzent/view_model/controllers/bottom_navigation_controller.dart';
-import 'package:newzent/view_model/controllers/feed_news_controller.dart';
+
 
 class MainPage extends StatelessWidget {
-  MainPage({super.key});
+   MainPage({super.key});
 
-  final BottomNavigationController navigationController =
-      Get.put(BottomNavigationController());
-  final FeedNewsController feedNewsController = Get.put(FeedNewsController());
+  final BottomNavigationController navigationController= Get.put( BottomNavigationController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(() =>
-          navigationController.pages[navigationController.currentIndex.value]),
-      bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
-          onTap: (value) => navigationController.onTabTapped(value),
+      
+      body: Obx(
+        () =>  navigationController.pages[navigationController.currentIndex.value]),
+      bottomNavigationBar: Obx(() =>  BottomNavigationBar(
+          onTap:(value) => navigationController.onTabTapped(value),
           currentIndex: navigationController.currentIndex.value,
           items: const [
             BottomNavigationBarItem(
@@ -38,3 +36,6 @@ class MainPage extends StatelessWidget {
     );
   }
 }
+
+
+
