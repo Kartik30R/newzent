@@ -1,32 +1,28 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:newzent/view/screens/app/main_screen.dart';
 import 'package:newzent/view/screens/auth/welcome_page.dart';
 import 'package:newzent/view_model/controllers/auth_controller.dart';
-import 'package:newzent/view_model/controllers/bottom_navigation_controller.dart';
+
 class ProfileScreen extends StatelessWidget {
-  ProfileScreen({super.key});
+   ProfileScreen({super.key});
   final User? user = FirebaseAuth.instance.currentUser;
-  final AuthController authController = Get.put(AuthController());
+  AuthController authController =AuthController();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return  Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Center(
-          child: Text(user!.email ?? ''),
+          child: Text(user!.email??''),
         ),
-        ElevatedButton(
-          onPressed: () async {
-            await authController.logOut();
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => WelcomePage()),
-            );
-          },
-          child: const Text('Log out'),
-        ),
+        ElevatedButton(onPressed: (){
+          authController.logOut();
+          Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => WelcomePage(),));
+
+        }, child: Text('Log out'))
       ],
     );
   }

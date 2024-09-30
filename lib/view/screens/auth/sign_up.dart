@@ -83,8 +83,8 @@ class SignUpScreen extends StatelessWidget {
                 onPressed: () async {
                   String xemail = email.text.trim();
                   String xpassword = password.text.trim();
-                bool isSigned=  await authController.register(xemail, xpassword);
-                  if (isSigned) {
+                  await authController.register(xemail, xpassword);
+                  if (authController.isRegister.value) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -93,12 +93,12 @@ class SignUpScreen extends StatelessWidget {
                     );
                   }
                 },
+                child: Text(
+                  "sign up".toUpperCase(),
+                ),
                 style: ButtonStyle(
                   backgroundColor: const WidgetStatePropertyAll(AppColor.primary),
                   shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)))
-                ),
-                child: Text(
-                  "sign up".toUpperCase(),
                 ),
               ),
               const SizedBox(height: 8),
