@@ -1,12 +1,13 @@
 import 'package:get/get.dart';
 import 'package:newzent/model/news/news_model.dart';
 import 'package:newzent/repository/news_repo.dart';
+import 'package:newzent/view_model/controllers/auth_controller.dart';
 import 'package:newzent/view_model/controllers/user_preference.dart';
 
 class FeedNewsController extends GetxController {
   final NewsRepo _newsRepo = NewsRepo();
   UserPreference pref = UserPreference();
-
+  AuthController authController = Get.find();
   RxInt page = 1.obs;
   RxInt pageSize = 10.obs;
   RxList<Articles> everyThingNews = <Articles>[].obs;
@@ -19,18 +20,26 @@ class FeedNewsController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
+    authController.fetchInterests;
+    print('${authController.interests}');
     await fetchEveryThingNews();
   }
 
   Future<void> fetchEveryThingNews() async {
+    print('everything news called');
     try {
       isLoading(true);
-      List<String> interests = await pref.getInterest();
+      List interests = authController.interests;
+      print(interests);
+      // List<String> interests = await pref.getInterest();
       if (interests.isEmpty) {
-        errorMessage('No interests found.');
+        print("$interests  no interst found");
+
+        errorMessage('kartik rehan.');
         return;
       }
-      String interestsQuery = interests.map((interest) => '"$interest"').join(' OR ');
+      String interestsQuery =
+          interests.map((interest) => '"$interest"').join(' OR ');
       NewsModel newsModel = await _newsRepo.fetchEverythingNews(
         search: interestsQuery,
         page: page.value.toString(),
@@ -49,8 +58,9 @@ class FeedNewsController extends GetxController {
     try {
       isLoadingMore(true);
       page.value++;
-      List<String> interests = await pref.getInterest();
-      String interestsQuery = interests.map((interest) => '"$interest"').join(' OR ');
+      List<String> interests = authController.interests;
+      String interestsQuery =
+          interests.map((interest) => '"$interest"').join(' OR ');
       NewsModel newsModel = await _newsRepo.fetchEverythingNews(
         search: interestsQuery,
         page: page.value.toString(),

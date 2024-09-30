@@ -95,7 +95,9 @@ class ExploreScreen extends StatelessWidget {
                         autoPlay: true,
                       ),
                     ),
-                    const SizedBox(height: 24,),
+                    const SizedBox(
+                      height: 24,
+                    ),
                     TabBar(
                       dividerHeight: 0,
                       indicator: BoxDecoration(),

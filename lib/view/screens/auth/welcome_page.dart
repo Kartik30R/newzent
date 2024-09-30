@@ -8,8 +8,7 @@ import 'package:newzent/view_model/controllers/bottom_navigation_controller.dart
 
 class WelcomePage extends StatelessWidget {
   WelcomePage({Key? key}) : super(key: key);
-  BottomNavigationController navigationController =
-      Get.put(BottomNavigationController());
+  BottomNavigationController navigationController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +88,7 @@ class WelcomePage extends StatelessWidget {
                           ),
                         );
                       },
-                      style:  ButtonStyle(
+                      style: ButtonStyle(
                         backgroundColor:
                             const WidgetStatePropertyAll(AppColor.primary),
                         elevation: const WidgetStatePropertyAll(0),

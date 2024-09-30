@@ -4,12 +4,15 @@ import 'package:newzent/resources/constants/color/app_color.dart';
 import 'package:newzent/resources/constants/dimension/app_dimension.dart';
 import 'package:newzent/view/screens/app/main_screen.dart';
 import 'package:newzent/view_model/controllers/auth_controller.dart';
-import 'package:newzent/view_model/controllers/feed_news_controller.dart';
+import 'package:newzent/view_model/controllers/bottom_navigation_controller.dart';
+
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
+
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
-  AuthController authController = Get.put(AuthController());
+  AuthController authController = Get.find();
+  BottomNavigationController navigationController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,9 @@ class LoginScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 100,),
+              const SizedBox(
+                height: 100,
+              ),
               Align(
                 alignment: Alignment.topLeft,
                 child: Text(
@@ -29,7 +34,9 @@ class LoginScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
-              const SizedBox(height: 40,),
+              const SizedBox(
+                height: 40,
+              ),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -37,7 +44,9 @@ class LoginScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
-              const SizedBox(height: 8,),
+              const SizedBox(
+                height: 8,
+              ),
               TextFormField(
                 controller: email,
                 keyboardType: TextInputType.emailAddress,
@@ -51,7 +60,9 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 24,),
+              const SizedBox(
+                height: 24,
+              ),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -59,7 +70,9 @@ class LoginScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
-              const SizedBox(height: 8,),
+              const SizedBox(
+                height: 8,
+              ),
               TextFormField(
                 controller: password,
                 textInputAction: TextInputAction.done,
@@ -72,13 +85,18 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 24,),
+              const SizedBox(
+                height: 24,
+              ),
               ElevatedButton(
                 onPressed: () async {
                   String xemail = email.text.trim();
                   String xpassword = password.text.trim();
-                  bool isLoggedIn = await authController.login(xemail, xpassword);
+                  bool isLoggedIn =
+                      await authController.login(xemail, xpassword);
                   if (isLoggedIn) {
+                    navigationController.currentIndex.value = 0;
+
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => MainPage()),
@@ -86,15 +104,19 @@ class LoginScreen extends StatelessWidget {
                     );
                   }
                 },
+                style: ButtonStyle(
+                  backgroundColor:
+                      const WidgetStatePropertyAll(AppColor.primary),
+                  shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4))),
+                ),
                 child: Text(
                   "Login".toUpperCase(),
                 ),
-                style: ButtonStyle(
-                  backgroundColor: const WidgetStatePropertyAll(AppColor.primary),
-                  shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
-                ),
               ),
-              const SizedBox(height: 8,),
+              const SizedBox(
+                height: 8,
+              ),
             ],
           ),
         ),

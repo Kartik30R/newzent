@@ -1,18 +1,19 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:newzent/model/user/user_model.dart';
-import 'package:newzent/view_model/controllers/bottom_navigation_controller.dart';
 import 'package:newzent/view_model/controllers/feed_news_controller.dart';
 import 'package:newzent/view_model/controllers/user_preference.dart';
+
 class AuthController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   UserPreference pref = UserPreference();
   UserModel user = UserModel();
   RxList<String> interests = <String>[].obs;
-  final FeedNewsController feedNewsController = Get.put(FeedNewsController());
+  RxInt maxInterest = 0.obs;
+  RxBool isPressedSignin = false.obs;
+  // FeedNewsController feedNewsController = Get.find();
 
   @override
   Future<void> onInit() async {
@@ -25,7 +26,8 @@ class AuthController extends GetxController {
 
   Future<bool> register(String email, String password) async {
     try {
-      UserCredential userCredential = await auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       await _setUserToken(userCredential);
       return true;
     } catch (e) {
@@ -35,18 +37,26 @@ class AuthController extends GetxController {
   }
 
   Future<bool> login(String email, String password) async {
+    bool interestFetched = false;
+
     try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
-      user = UserModel(isLogin: true, token: await userCredential.user!.getIdToken(), uid: userCredential.user!.uid);
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      user = UserModel(
+          isLogin: true,
+          token: await userCredential.user!.getIdToken(),
+          uid: userCredential.user!.uid);
       pref.saveUser(user);
-      BottomNavigationController().currentIndex.value = 0;
-      await fetchInterests();
-      pref.saveInterest(interests);
-      feedNewsController.fetchEveryThingNews(); // Fetch news after login based on interests
-      return true;
+      interestFetched = await fetchInterests();
+      // pref.saveInterest(interests);
+      // feedNewsController.fetchEveryThingNews();
+
+      print("interest fetched $interestFetched");
+
+      return interestFetched;
     } catch (e) {
       Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);
-      return false;
+      return interestFetched;
     }
   }
 
@@ -54,8 +64,6 @@ class AuthController extends GetxController {
     await auth.signOut();
     pref.removeUser();
     interests.clear();
-    pref.deleteInterest();
-    feedNewsController.everyThingNews.clear(); // Clear everythingNews on logout
   }
 
   Future<void> _setUserToken(UserCredential userCredential) async {
@@ -68,19 +76,19 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> fetchInterests() async {
+  Future<bool> fetchInterests() async {
     User? currentUser = auth.currentUser;
     if (currentUser != null) {
-      DocumentSnapshot<Map<String, dynamic>> snapshot = await firestore.collection('users').doc(currentUser.uid).get();
+      DocumentSnapshot<Map<String, dynamic>> snapshot =
+          await firestore.collection('users').doc(currentUser.uid).get();
       Map<String, dynamic>? userData = snapshot.data();
       if (userData != null && userData['interests'] != null) {
         interests.assignAll(List<String>.from(userData['interests']));
+        print(interests);
+        return true;
       }
     }
-  }
-
-  bool isUserLoggedIn() {
-    return user.isLogin ?? false;
+    return false;
   }
 
   Future<void> updateInterests() async {
@@ -90,6 +98,11 @@ class AuthController extends GetxController {
         'interests': interests.toList(),
       });
     }
+    print('saved  $interests');
     interests.clear();
+  }
+
+  bool isUserLoggedIn() {
+    return user.isLogin ?? false;
   }
 }

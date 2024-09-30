@@ -17,7 +17,7 @@ class SignUpScreen extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding:  EdgeInsets.all(AppDimension().defaultMargin),
+          padding: EdgeInsets.all(AppDimension().defaultMargin),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -34,12 +34,12 @@ class SignUpScreen extends StatelessWidget {
                 height: 40,
               ),
               Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Email',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Email',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
               const SizedBox(
                 height: 8,
               ),
@@ -55,14 +55,16 @@ class SignUpScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 24,),
-             Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Password',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ),
+              const SizedBox(
+                height: 24,
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Password',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
               const SizedBox(
                 height: 8,
               ),
@@ -79,26 +81,38 @@ class SignUpScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () async {
-                  String xemail = email.text.trim();
-                  String xpassword = password.text.trim();
-                bool isSigned=  await authController.register(xemail, xpassword);
-                  if (isSigned) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => InterestsScreen(),
-                      ),
-                    );
-                  }
-                },
-                style: ButtonStyle(
-                  backgroundColor: const WidgetStatePropertyAll(AppColor.primary),
-                  shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)))
-                ),
-                child: Text(
-                  "sign up".toUpperCase(),
+              Obx(
+                () => ElevatedButton(
+                  onPressed: () async {
+                    String xemail = email.text.trim();
+                    String xpassword = password.text.trim();
+                    if (xemail.isEmpty || xpassword.isEmpty) {
+                      print('empty fields;');
+                    } else {
+                      authController.isPressedSignin.value = true;
+                      print(authController.isPressedSignin.value);
+                      bool isSigned =
+                          await authController.register(xemail, xpassword);
+                      if (isSigned) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => InterestsScreen(),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  style: ButtonStyle(
+                      backgroundColor:
+                          const WidgetStatePropertyAll(AppColor.primary),
+                      shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4)))),
+                  child: authController.isPressedSignin.value
+                      ? const CircularProgressIndicator()
+                      : Text(
+                          "sign up".toUpperCase(),
+                        ),
                 ),
               ),
               const SizedBox(height: 8),
