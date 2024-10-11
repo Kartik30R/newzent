@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:newzent/model/news/news_model.dart';
 import 'package:newzent/resources/constants/color/app_color.dart';
+import 'package:newzent/resources/constants/routes/routes.dart';
 import 'package:newzent/utils/time_util.dart';
 import 'package:newzent/view/screens/app/article_screen.dart';
 
@@ -17,11 +19,12 @@ class NewsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleScreen(news: news),));},
+      onTap: () {
+        Get.toNamed(AppRoutes.article, arguments: news);
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: SizedBox(
-          
           width: double.infinity,
           height: 235,
           child: Card(
@@ -57,16 +60,18 @@ class NewsCard extends StatelessWidget {
                     height: 7,
                   ),
                   Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       const CircleAvatar(
-                          backgroundImage: const CachedNetworkImageProvider(
-                            'https://ioflood.com/blog/wp-content/uploads/2023/10/java_logo_dice_random.jpg',
-                          ),
-                          radius: 8,
+                        backgroundImage: const CachedNetworkImageProvider(
+                          'https://ioflood.com/blog/wp-content/uploads/2023/10/java_logo_dice_random.jpg',
                         ),
-                        const SizedBox(width: 8,),
+                        radius: 8,
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
                       Text(
                         news.source!.name!,
                         style: Theme.of(context).textTheme.labelSmall,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newzent/resources/constants/color/app_color.dart';
 import 'package:newzent/resources/constants/dimension/app_dimension.dart';
+import 'package:newzent/resources/constants/routes/routes.dart';
 import 'package:newzent/resources/constants/string/app_string.dart';
 import 'package:newzent/view/screens/auth/login_screen.dart';
 import 'package:newzent/view_model/controllers/auth_controller.dart';
@@ -93,12 +94,7 @@ class InterestsScreen extends StatelessWidget {
                           snackPosition: SnackPosition.BOTTOM);
                     } else {
                       authController.updateInterests();
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
-                        ),
-                      );
+                      Get.offNamed(AppRoutes.logIn);
                     }
                   },
                   child: const Text('Done')),

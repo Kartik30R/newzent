@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newzent/resources/constants/color/app_color.dart';
 import 'package:newzent/resources/constants/dimension/app_dimension.dart';
+import 'package:newzent/resources/constants/routes/routes.dart';
 import 'package:newzent/view/screens/app/main_screen.dart';
 import 'package:newzent/view_model/controllers/auth_controller.dart';
 import 'package:newzent/view_model/controllers/bottom_navigation_controller.dart';
@@ -96,12 +97,7 @@ class LoginScreen extends StatelessWidget {
                       await authController.login(xemail, xpassword);
                   if (isLoggedIn) {
                     navigationController.currentIndex.value = 0;
-
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => MainPage()),
-                      (Route<dynamic> route) => false,
-                    );
+                    Get.offAllNamed(AppRoutes.main);
                   }
                 },
                 style: ButtonStyle(

@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:newzent/model/user/user_model.dart';
-import 'package:newzent/view_model/controllers/feed_news_controller.dart';
 import 'package:newzent/view_model/controllers/user_preference.dart';
 
 class AuthController extends GetxController {
@@ -13,17 +12,8 @@ class AuthController extends GetxController {
   RxList<String> interests = <String>[].obs;
   RxInt maxInterest = 0.obs;
   RxBool isPressedSignin = false.obs;
-  // FeedNewsController feedNewsController = Get.find();
 
-  @override
-  Future<void> onInit() async {
-    super.onInit();
-    user = await pref.getUser();
-    if (user.isLogin == true) {
-      await fetchInterests();
-    }
-  }
-
+  //AUTH METHODS
   Future<bool> register(String email, String password) async {
     try {
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
@@ -48,10 +38,9 @@ class AuthController extends GetxController {
           uid: userCredential.user!.uid);
       pref.saveUser(user);
       interestFetched = await fetchInterests();
-      // pref.saveInterest(interests);
-      // feedNewsController.fetchEveryThingNews();
+      pref.saveInterest(interests.toList());
 
-      print("interest fetched $interestFetched");
+      print("interest fetched $interestFetched in login");
 
       return interestFetched;
     } catch (e) {
@@ -62,6 +51,7 @@ class AuthController extends GetxController {
 
   Future<void> logOut() async {
     await auth.signOut();
+    pref.deleteInterest();
     pref.removeUser();
     interests.clear();
   }
@@ -76,6 +66,7 @@ class AuthController extends GetxController {
     }
   }
 
+//INTERESTS METHOD
   Future<bool> fetchInterests() async {
     User? currentUser = auth.currentUser;
     if (currentUser != null) {
@@ -84,7 +75,7 @@ class AuthController extends GetxController {
       Map<String, dynamic>? userData = snapshot.data();
       if (userData != null && userData['interests'] != null) {
         interests.assignAll(List<String>.from(userData['interests']));
-        print(interests);
+        print("$interests  in function");
         return true;
       }
     }
@@ -98,6 +89,7 @@ class AuthController extends GetxController {
         'interests': interests.toList(),
       });
     }
+    pref.saveInterest(interests.toList());
     print('saved  $interests');
     interests.clear();
   }

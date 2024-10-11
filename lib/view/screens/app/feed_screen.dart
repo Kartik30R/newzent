@@ -47,10 +47,12 @@ class FeedScreen extends StatelessWidget {
                 children: [
                   const SizedBox(height: 21),
                   Padding(
-                    padding: EdgeInsets.all(dimension.defaultMargin).copyWith(bottom: 0, top: 0),
+                    padding: EdgeInsets.all(dimension.defaultMargin)
+                        .copyWith(bottom: 0, top: 0),
                     child: Row(
                       children: [
-                        Text('My Feed', style: Theme.of(context).textTheme.titleLarge),
+                        Text('My Feed',
+                            style: Theme.of(context).textTheme.titleLarge),
                         const Spacer(),
                         const Icon(Icons.search),
                       ],
@@ -60,7 +62,8 @@ class FeedScreen extends StatelessWidget {
                   CarouselSlider.builder(
                     itemCount: 5,
                     itemBuilder: (context, index, realIndex) {
-                      return NewsCard(news: newsController.everyThingNews[index]);
+                      return NewsCard(
+                          news: newsController.everyThingNews[index]);
                     },
                     options: CarouselOptions(
                       height: 235,
@@ -73,7 +76,8 @@ class FeedScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Padding(
-                    padding: EdgeInsets.all(dimension.defaultMargin).copyWith(bottom: 0, top: 0),
+                    padding: EdgeInsets.all(dimension.defaultMargin)
+                        .copyWith(bottom: 0, top: 0),
                     child: Row(
                       children: [
                         DropdownButton<String>(
@@ -81,7 +85,10 @@ class FeedScreen extends StatelessWidget {
                           items: newsController.sortBy.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value, style: Theme.of(context).textTheme.headlineMedium),
+                              child: Text(value,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium),
                             );
                           }).toList(),
                           onChanged: (newValue) {
@@ -95,7 +102,8 @@ class FeedScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Padding(
-                    padding: EdgeInsets.all(dimension.defaultMargin).copyWith(bottom: 0, top: 0),
+                    padding: EdgeInsets.all(dimension.defaultMargin)
+                        .copyWith(bottom: 0, top: 0),
                     child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -103,7 +111,8 @@ class FeedScreen extends StatelessWidget {
                           (newsController.isLoadingMore.value ? 1 : 0),
                       itemBuilder: (context, index) {
                         if (index < newsController.everyThingNews.length) {
-                          final newsArticle = newsController.everyThingNews[index];
+                          final newsArticle =
+                              newsController.everyThingNews[index];
                           return Column(
                             children: [
                               NewsTile(news: newsArticle),
@@ -111,7 +120,8 @@ class FeedScreen extends StatelessWidget {
                             ],
                           );
                         } else {
-                          return const Center(child: AppWidgets.loadingIndicator);
+                          return const Center(
+                              child: AppWidgets.loadingIndicator);
                         }
                       },
                     ),
@@ -125,4 +135,3 @@ class FeedScreen extends StatelessWidget {
     );
   }
 }
-

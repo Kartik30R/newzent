@@ -1,13 +1,11 @@
 import 'package:get/get.dart';
 import 'package:newzent/model/news/news_model.dart';
 import 'package:newzent/repository/news_repo.dart';
-import 'package:newzent/view_model/controllers/auth_controller.dart';
 import 'package:newzent/view_model/controllers/user_preference.dart';
 
 class FeedNewsController extends GetxController {
   final NewsRepo _newsRepo = NewsRepo();
   UserPreference pref = UserPreference();
-  AuthController authController = Get.find();
   RxInt page = 1.obs;
   RxInt pageSize = 10.obs;
   RxList<Articles> everyThingNews = <Articles>[].obs;
@@ -16,12 +14,13 @@ class FeedNewsController extends GetxController {
   RxList<String> sortBy = ['relevancy', 'popularity', 'publishedAt'].obs;
   RxString currentSort = 'relevancy'.obs;
   RxString errorMessage = ''.obs;
+  List<String> interests = [];
 
   @override
   Future<void> onInit() async {
     super.onInit();
-    authController.fetchInterests;
-    print('${authController.interests}');
+    interests = await pref.getInterest();
+    print('${interests}');
     await fetchEveryThingNews();
   }
 
@@ -29,17 +28,17 @@ class FeedNewsController extends GetxController {
     print('everything news called');
     try {
       isLoading(true);
-      List interests = authController.interests;
-      print(interests);
-      // List<String> interests = await pref.getInterest();
+      print("$interests  + feed");
       if (interests.isEmpty) {
         print("$interests  no interst found");
 
-        errorMessage('kartik rehan.');
+        errorMessage('No interest found');
         return;
       }
+      everyThingNews.clear();
       String interestsQuery =
           interests.map((interest) => '"$interest"').join(' OR ');
+
       NewsModel newsModel = await _newsRepo.fetchEverythingNews(
         search: interestsQuery,
         page: page.value.toString(),
@@ -48,6 +47,7 @@ class FeedNewsController extends GetxController {
       );
       everyThingNews.value = _removeDuplicates(newsModel.articles ?? []);
     } catch (e) {
+      print(e);
       errorMessage(e.toString());
     } finally {
       isLoading(false);
@@ -58,7 +58,6 @@ class FeedNewsController extends GetxController {
     try {
       isLoadingMore(true);
       page.value++;
-      List<String> interests = authController.interests;
       String interestsQuery =
           interests.map((interest) => '"$interest"').join(' OR ');
       NewsModel newsModel = await _newsRepo.fetchEverythingNews(

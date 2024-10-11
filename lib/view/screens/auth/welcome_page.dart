@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newzent/resources/constants/color/app_color.dart';
 import 'package:newzent/resources/constants/dimension/app_dimension.dart';
+import 'package:newzent/resources/constants/routes/routes.dart';
 import 'package:newzent/view/screens/auth/login_screen.dart';
 import 'package:newzent/view/screens/auth/sign_up.dart';
 import 'package:newzent/view_model/controllers/bottom_navigation_controller.dart';
@@ -52,14 +53,7 @@ class WelcomePage extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return LoginScreen();
-                            },
-                          ),
-                        );
+                        Get.toNamed(AppRoutes.getLogIn());
                       },
                       style: ButtonStyle(
                         backgroundColor: const WidgetStatePropertyAll(
@@ -79,14 +73,7 @@ class WelcomePage extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return SignUpScreen();
-                            },
-                          ),
-                        );
+                        Get.toNamed(AppRoutes.getSignUp());
                       },
                       style: ButtonStyle(
                         backgroundColor:

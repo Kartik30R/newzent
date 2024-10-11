@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newzent/resources/constants/color/app_color.dart';
 import 'package:newzent/resources/constants/dimension/app_dimension.dart';
-import 'package:newzent/view/screens/auth/interests_screen.dart';
+import 'package:newzent/resources/constants/routes/routes.dart';
 import 'package:newzent/view_model/controllers/auth_controller.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -94,12 +94,7 @@ class SignUpScreen extends StatelessWidget {
                       bool isSigned =
                           await authController.register(xemail, xpassword);
                       if (isSigned) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => InterestsScreen(),
-                          ),
-                        );
+                        Get.toNamed(AppRoutes.getInterest());
                       }
                     }
                   },
