@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newzent/resources/constants/color/app_color.dart';
 import 'package:newzent/resources/constants/dimension/app_dimension.dart';
-import 'package:newzent/view/screens/auth/interests_screen.dart';
+import 'package:newzent/resources/constants/routes/routes.dart';
 import 'package:newzent/view_model/controllers/auth_controller.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -83,36 +83,32 @@ class SignUpScreen extends StatelessWidget {
               const SizedBox(height: 16),
               Obx(
                 () => ElevatedButton(
-                    onPressed: () async {
-                      if (email.text.trim().isNotEmpty &&
-                          password.text.trim().isNotEmpty) {
-                        authController.pressed.value = true;
-                        bool success = await authController.register(
-                            email.text.trim(), password.text.trim());
-
-                        authController.pressed.value = false;
-                        if (success) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => InterestsScreen(),
-                            ),
-                          );
-                        }
-                      } else {
-                        Get.snackbar(
-                            "Error", "Email or password can't be empty",
-                            snackPosition: SnackPosition.BOTTOM);
+                  onPressed: () async {
+                    String xemail = email.text.trim();
+                    String xpassword = password.text.trim();
+                    if (xemail.isEmpty || xpassword.isEmpty) {
+                      print('empty fields;');
+                    } else {
+                      authController.isPressedSignin.value = true;
+                      print(authController.isPressedSignin.value);
+                      bool isSigned =
+                          await authController.register(xemail, xpassword);
+                      if (isSigned) {
+                        Get.toNamed(AppRoutes.getInterest());
                       }
-                    },
-                    style: ButtonStyle(
-                        backgroundColor:
-                            const WidgetStatePropertyAll(AppColor.primary),
-                        shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4)))),
-                    child: authController.pressed.value
-                        ? const CircularProgressIndicator()
-                        : Text("sign up".toUpperCase())),
+                    }
+                  },
+                  style: ButtonStyle(
+                      backgroundColor:
+                          const WidgetStatePropertyAll(AppColor.primary),
+                      shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4)))),
+                  child: authController.isPressedSignin.value
+                      ? const CircularProgressIndicator()
+                      : Text(
+                          "sign up".toUpperCase(),
+                        ),
+                ),
               ),
               const SizedBox(height: 8),
             ],

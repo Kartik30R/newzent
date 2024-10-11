@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:newzent/model/user/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,24 +10,6 @@ class UserPreference {
 
     return true;
   }
-
-// Future<bool> saveInterest(List<String> interest) async{
-//         SharedPreferences sp = await SharedPreferences.getInstance();
-//         sp.setStringList('interest', interest);
-//         return true;
-
-// }
-// Future<List<String>> getInterest() async{
-//         SharedPreferences sp = await SharedPreferences.getInstance();
-//      return   sp.getStringList('interest') ??[];
-
-// }
-
-// Future<void> deleteInterest() async{
-//         SharedPreferences sp = await SharedPreferences.getInstance();
-//        sp.remove('interest') ;
-
-// }
 
   Future<UserModel> getUser() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
@@ -43,5 +24,24 @@ class UserPreference {
     SharedPreferences sp = await SharedPreferences.getInstance();
     sp.clear();
     return true;
+  }
+
+  Future<bool> saveInterest(List<String> interest) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setStringList('interest', interest);
+    print("sintpref");
+    return true;
+  }
+
+  Future<List<String>> getInterest() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    print("gintpref");
+    return sp.getStringList('interest') ?? [];
+  }
+
+  Future<void> deleteInterest() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    print("dintpref");
+    sp.remove('interest');
   }
 }

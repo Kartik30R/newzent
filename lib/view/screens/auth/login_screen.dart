@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newzent/resources/constants/color/app_color.dart';
 import 'package:newzent/resources/constants/dimension/app_dimension.dart';
+import 'package:newzent/resources/constants/routes/routes.dart';
 import 'package:newzent/view/screens/app/main_screen.dart';
 import 'package:newzent/view_model/controllers/auth_controller.dart';
-import 'package:newzent/view_model/controllers/feed_news_controller.dart';
+import 'package:newzent/view_model/controllers/bottom_navigation_controller.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
+
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
-  AuthController authController = Get.put(AuthController());
+  AuthController authController = Get.find();
+  BottomNavigationController navigationController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -93,21 +96,18 @@ class LoginScreen extends StatelessWidget {
                   bool isLoggedIn =
                       await authController.login(xemail, xpassword);
                   if (isLoggedIn) {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => MainPage()),
-                      (Route<dynamic> route) => false,
-                    );
+                    navigationController.currentIndex.value = 0;
+                    Get.offAllNamed(AppRoutes.main);
                   }
                 },
-                child: Text(
-                  "Login".toUpperCase(),
-                ),
                 style: ButtonStyle(
                   backgroundColor:
                       const WidgetStatePropertyAll(AppColor.primary),
                   shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4))),
+                ),
+                child: Text(
+                  "Login".toUpperCase(),
                 ),
               ),
               const SizedBox(

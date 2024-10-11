@@ -17,7 +17,6 @@ class FeedScreen extends StatelessWidget {
   }
 
   void _onScroll() {
-    newsController.saveScrollPosition(_scrollController.position.pixels);
     if (_scrollController.position.atEdge) {
       bool isBottom = _scrollController.position.pixels != 0;
       if (isBottom) {
@@ -28,10 +27,6 @@ class FeedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollController.jumpTo(newsController.scrollPosition.value);
-    });
-
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -117,7 +112,7 @@ class FeedScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         if (index < newsController.everyThingNews.length) {
                           final newsArticle =
-                              newsController.everyThingNews[index + 5];
+                              newsController.everyThingNews[index];
                           return Column(
                             children: [
                               NewsTile(news: newsArticle),

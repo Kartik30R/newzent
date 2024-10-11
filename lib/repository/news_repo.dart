@@ -18,7 +18,7 @@ class NewsRepo {
     };
 
     final params = {
-      'q': search ?? 'india',     
+      'q': search ?? 'india',
       'sortBy': sortBy,
       'pageSize': pageSize,
       'page': page,
@@ -28,6 +28,7 @@ class NewsRepo {
     try {
       final response = await _apiService.getApi(AppString.everythingBasePoint,
           headers: headers, params: params);
+      print("$response in fetcheverything controller");
       return NewsModel.fromJson(response);
     } catch (e) {
       rethrow;
@@ -47,7 +48,7 @@ class NewsRepo {
     };
 
     final params = {
-      'country': country ?? 'in',
+      'country': country ?? 'us',
       'q': search,
       'pageSize': pageSize,
       'page': page,
@@ -59,6 +60,7 @@ class NewsRepo {
     try {
       final response = await _apiService.getApi(AppString.topHeadlineBasePoint,
           headers: headers, params: params);
+      print('${response} response fetchtopnews');
       return NewsModel.fromJson(response);
     } catch (e) {
       rethrow;

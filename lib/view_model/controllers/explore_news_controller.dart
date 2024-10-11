@@ -46,8 +46,10 @@ class ExploreNewsController extends GetxController {
 
   Future<void> fetchTopNews() async {
     await _fetchNewsForCategory(null, topNews, isLoadingTopNews, topNewsPage);
+    topNews.refresh();
     if (kDebugMode) {
       print('hit top news');
+      print(topNews.toList().toString());
     }
   }
 
@@ -78,49 +80,56 @@ class ExploreNewsController extends GetxController {
   }
 
   Future<void> fetchBusinessNews() async {
-    await _fetchNewsForCategory('business', businessNews, isLoadingBusinessNews, businessNewsPage);
+    await _fetchNewsForCategory(
+        'business', businessNews, isLoadingBusinessNews, businessNewsPage);
     if (kDebugMode) {
       print('hit business news');
     }
   }
 
   Future<void> fetchEntertainmentNews() async {
-    await _fetchNewsForCategory('entertainment', entertainmentNews, isLoadingEntertainmentNews, entertainmentNewsPage);
+    await _fetchNewsForCategory('entertainment', entertainmentNews,
+        isLoadingEntertainmentNews, entertainmentNewsPage);
     if (kDebugMode) {
       print('hit entertainment news');
     }
   }
 
   Future<void> fetchGeneralNews() async {
-    await _fetchNewsForCategory('general', generalNews, isLoadingGeneralNews, generalNewsPage);
+    await _fetchNewsForCategory(
+        'general', generalNews, isLoadingGeneralNews, generalNewsPage);
     if (kDebugMode) {
       print('hit general news');
     }
   }
 
   Future<void> fetchHealthNews() async {
-    await _fetchNewsForCategory('health', healthNews, isLoadingHealthNews, healthNewsPage);
+    await _fetchNewsForCategory(
+        'health', healthNews, isLoadingHealthNews, healthNewsPage);
     if (kDebugMode) {
       print('hit health news');
     }
   }
 
   Future<void> fetchScienceNews() async {
-    await _fetchNewsForCategory('science', scienceNews, isLoadingScienceNews, scienceNewsPage);
+    await _fetchNewsForCategory(
+        'science', scienceNews, isLoadingScienceNews, scienceNewsPage);
     if (kDebugMode) {
       print('hit science news');
     }
   }
 
   Future<void> fetchSportsNews() async {
-    await _fetchNewsForCategory('sports', sportsNews, isLoadingSportsNews, sportsNewsPage);
+    await _fetchNewsForCategory(
+        'sports', sportsNews, isLoadingSportsNews, sportsNewsPage);
     if (kDebugMode) {
       print('hit sports news');
     }
   }
 
   Future<void> fetchTechnologyNews() async {
-    await _fetchNewsForCategory('technology', technologyNews, isLoadingTechnologyNews, technologyNewsPage);
+    await _fetchNewsForCategory('technology', technologyNews,
+        isLoadingTechnologyNews, technologyNewsPage);
     if (kDebugMode) {
       print('hit technology news');
     }
@@ -128,35 +137,44 @@ class ExploreNewsController extends GetxController {
 
   Future<void> loadMoreNews(String? category) async {
     if (category == null) {
-      await _loadMoreNewsForCategory(null, topNews, topNewsPage, isLoadingTopNews);
+      await _loadMoreNewsForCategory(
+          null, topNews, topNewsPage, isLoadingTopNews);
     } else {
       switch (category) {
         case 'business':
-          await _loadMoreNewsForCategory('business', businessNews, businessNewsPage, isLoadingBusinessNews);
+          await _loadMoreNewsForCategory('business', businessNews,
+              businessNewsPage, isLoadingBusinessNews);
           break;
         case 'entertainment':
-          await _loadMoreNewsForCategory('entertainment', entertainmentNews, entertainmentNewsPage, isLoadingEntertainmentNews);
+          await _loadMoreNewsForCategory('entertainment', entertainmentNews,
+              entertainmentNewsPage, isLoadingEntertainmentNews);
           break;
         case 'general':
-          await _loadMoreNewsForCategory('general', generalNews, generalNewsPage, isLoadingGeneralNews);
+          await _loadMoreNewsForCategory(
+              'general', generalNews, generalNewsPage, isLoadingGeneralNews);
           break;
         case 'health':
-          await _loadMoreNewsForCategory('health', healthNews, healthNewsPage, isLoadingHealthNews);
+          await _loadMoreNewsForCategory(
+              'health', healthNews, healthNewsPage, isLoadingHealthNews);
           break;
         case 'science':
-          await _loadMoreNewsForCategory('science', scienceNews, scienceNewsPage, isLoadingScienceNews);
+          await _loadMoreNewsForCategory(
+              'science', scienceNews, scienceNewsPage, isLoadingScienceNews);
           break;
         case 'sports':
-          await _loadMoreNewsForCategory('sports', sportsNews, sportsNewsPage, isLoadingSportsNews);
+          await _loadMoreNewsForCategory(
+              'sports', sportsNews, sportsNewsPage, isLoadingSportsNews);
           break;
         case 'technology':
-          await _loadMoreNewsForCategory('technology', technologyNews, technologyNewsPage, isLoadingTechnologyNews);
+          await _loadMoreNewsForCategory('technology', technologyNews,
+              technologyNewsPage, isLoadingTechnologyNews);
           break;
       }
     }
   }
 
-  Future<void> _fetchNewsForCategory(String? category, RxList<Articles> targetList, RxBool isLoading, RxInt page) async {
+  Future<void> _fetchNewsForCategory(String? category,
+      RxList<Articles> targetList, RxBool isLoading, RxInt page) async {
     try {
       isLoading(true);
       NewsModel newsModel = await _newsRepo.fetchTopNews(
@@ -164,15 +182,20 @@ class ExploreNewsController extends GetxController {
         pageSize: pageSize.value.toString(),
         category: category,
       );
+      print('$newsModel newsModel ');
       targetList.value = _removeDuplicates(newsModel.articles ?? []);
+      targetList.refresh();
+      print(targetList);
     } catch (e) {
+      print(e);
       errorMessage(e.toString());
     } finally {
       isLoading(false);
     }
   }
 
-  Future<void> _loadMoreNewsForCategory(String? category, RxList<Articles> targetList, RxInt page, RxBool isLoading) async {
+  Future<void> _loadMoreNewsForCategory(String? category,
+      RxList<Articles> targetList, RxInt page, RxBool isLoading) async {
     try {
       isFetchingMore(true);
       if (page.value < 10) {
@@ -183,6 +206,7 @@ class ExploreNewsController extends GetxController {
           category: category,
         );
         targetList.addAll(_removeDuplicates(newsModel.articles ?? []));
+        targetList.refresh();
       }
     } catch (e) {
       errorMessage(e.toString());

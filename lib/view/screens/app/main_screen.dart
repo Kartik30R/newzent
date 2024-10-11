@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newzent/view/screens/app/explore_screen.dart';
+import 'package:newzent/view/screens/app/feed_screen.dart';
+import 'package:newzent/view/screens/app/profile_screen.dart';
 import 'package:newzent/view_model/controllers/bottom_navigation_controller.dart';
-import 'package:newzent/view_model/controllers/feed_news_controller.dart';
 
 class MainPage extends StatelessWidget {
   MainPage({super.key});
 
   final BottomNavigationController navigationController =
       Get.put(BottomNavigationController());
-  final FeedNewsController feedNewsController = Get.put(FeedNewsController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(() =>
-          navigationController.pages[navigationController.currentIndex.value]),
+      body: Obx(() => IndexedStack(
+            index: navigationController.currentIndex.value,
+            children: [FeedScreen(), ExploreScreen(), ProfileScreen()],
+          )),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           onTap: (value) => navigationController.onTabTapped(value),

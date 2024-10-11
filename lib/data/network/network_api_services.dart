@@ -8,12 +8,17 @@ import 'package:newzent/data/network/base_api_services.dart';
 
 class NetworkApiServices extends BaseApiServices {
   @override
-  Future<dynamic> getApi(String url, {Map<String, String>? headers, Map<String, String?>? params}) async {
+  Future<dynamic> getApi(String url,
+      {Map<String, String>? headers, Map<String, String?>? params}) async {
     _logRequest(url, params);
 
     try {
       final uri = Uri.parse(url).replace(queryParameters: params);
-      final response = await http.get(uri, headers: headers).timeout(const Duration(seconds: 10));
+      print(uri);
+      final response = await http.get(uri, headers: headers);
+      // .timeout(const Duration(seconds: 30));
+      print(response.body);
+      print("$uri get api");
       return _processResponse(response);
     } on SocketException {
       throw InternetException('No internet connection');
@@ -25,12 +30,15 @@ class NetworkApiServices extends BaseApiServices {
   }
 
   @override
-  Future<dynamic> postApi(dynamic data, String url, {Map<String, String>? headers, Map<String, String>? params}) async {
+  Future<dynamic> postApi(dynamic data, String url,
+      {Map<String, String>? headers, Map<String, String>? params}) async {
     _logRequest(url, params, data: data);
 
     try {
       final uri = Uri.parse(url).replace(queryParameters: params);
-      final response = await http.post(uri, headers: headers, body: data).timeout(const Duration(seconds: 10));
+      final response = await http
+          .post(uri, headers: headers, body: data)
+          .timeout(const Duration(seconds: 10));
       return _processResponse(response);
     } on SocketException {
       throw InternetException('No internet connection');
@@ -64,7 +72,8 @@ class NetworkApiServices extends BaseApiServices {
       case 500:
         throw ServerException('Internal server error: ${response.body}');
       default:
-        throw FetchDataException('Error occurred while communicating with server, status code: ${response.statusCode}');
+        throw FetchDataException(
+            'Error occurred while communicating with server, status code: ${response.statusCode}');
     }
   }
 }

@@ -1,8 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newzent/resources/constants/color/app_color.dart';
 import 'package:newzent/resources/constants/dimension/app_dimension.dart';
+import 'package:newzent/resources/constants/routes/routes.dart';
 import 'package:newzent/resources/constants/string/app_string.dart';
 import 'package:newzent/view/screens/auth/login_screen.dart';
 import 'package:newzent/view_model/controllers/auth_controller.dart';
@@ -34,13 +34,20 @@ class InterestsScreen extends StatelessWidget {
                               onPressed: () {
                                 if (authController.interests.contains(e)) {
                                   authController.interests.remove(e);
-                                  if (kDebugMode) {
-                                    print('removed');
-                                  }
+
+                                  authController.maxInterest--;
+                                  print(
+                                      "removed   $authController.maxInterest");
                                 } else {
-                                  authController.interests.add(e);
-                                  if (kDebugMode) {
-                                    print('added');
+                                  if (authController.maxInterest.value >= 5) {
+                                    Get.snackbar("Limit reached",
+                                        "You can choose only 5 interests",
+                                        snackPosition: SnackPosition.BOTTOM);
+                                  } else {
+                                    authController.interests.add(e);
+                                    authController.maxInterest++;
+                                    print(
+                                        "added   $authController.maxInterest");
                                   }
                                 }
                               },
@@ -80,23 +87,14 @@ class InterestsScreen extends StatelessWidget {
                           const WidgetStatePropertyAll(AppColor.primary),
                       shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4)))),
-                  onPressed: () async {
+                  onPressed: () {
                     if (authController.interests.isEmpty) {
-                      Get.snackbar(
-                        'No Selection',
-                        'Please select at least one interest.',
-                        snackPosition: SnackPosition.BOTTOM,
-                        backgroundColor: Colors.redAccent,
-                        colorText: Colors.white,
-                      );
+                      Get.snackbar("No Interests Selected",
+                          "Please select at least one interest.",
+                          snackPosition: SnackPosition.BOTTOM);
                     } else {
                       authController.updateInterests();
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
-                        ),
-                      );
+                      Get.offNamed(AppRoutes.logIn);
                     }
                   },
                   child: const Text('Done')),
