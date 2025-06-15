@@ -1,5 +1,5 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
+// import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart' hide CarouselController;
 import 'package:get/get.dart';
 import 'package:newzent/resources/constants/dimension/app_dimension.dart';
 import 'package:newzent/resources/widgets/app_widgets.dart';
@@ -59,21 +59,21 @@ class FeedScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  CarouselSlider.builder(
-                    itemCount: 5,
-                    itemBuilder: (context, index, realIndex) {
-                      return NewsCard(
-                          news: newsController.everyThingNews[index]);
-                    },
-                    options: CarouselOptions(
-                      height: 235,
-                      viewportFraction: .8,
-                      enlargeStrategy: CenterPageEnlargeStrategy.scale,
-                      enableInfiniteScroll: false,
-                      initialPage: 2,
-                      autoPlay: true,
-                    ),
-                  ),
+                  // CarouselSlider.builder(
+                  //   itemCount: 5,
+                  //   itemBuilder: (context, index, realIndex) {
+                  //     return NewsCard(
+                  //         news: newsController.everyThingNews[index]);
+                  //   },
+                  //   options: CarouselOptions(
+                  //     height: 235,
+                  //     viewportFraction: .8,
+                  //     enlargeStrategy: CenterPageEnlargeStrategy.scale,
+                  //     enableInfiniteScroll: false,
+                  //     initialPage: 2,
+                  //     autoPlay: true,
+                  //   ),
+                  // ),
                   const SizedBox(height: 12),
                   Padding(
                     padding: EdgeInsets.all(dimension.defaultMargin)

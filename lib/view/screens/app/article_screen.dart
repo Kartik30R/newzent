@@ -30,7 +30,7 @@ class ArticleScreen extends StatelessWidget {
                   borderRadius:
                       BorderRadius.circular(AppDimension().borderRadius),
                   image: DecorationImage(
-                    image: CachedNetworkImageProvider(news!.urlToImage ??
+                    image: CachedNetworkImageProvider(news.urlToImage ??
                         'https://rezista.in/wp-content/uploads/2020/07/Hero-Banner-Placeholder-Dark-1024x480-1.png'),
                   )),
             ),
@@ -38,7 +38,7 @@ class ArticleScreen extends StatelessWidget {
               height: 12,
             ),
             Text(
-              news!.title!,
+              news.title!,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(
@@ -47,7 +47,7 @@ class ArticleScreen extends StatelessWidget {
             Text(
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              '${news!.source!.name} | ${TimeUtils.timeAgo(news!.publishedAt!)}',
+              '${news.source!.name} | ${TimeUtils.timeAgo(news.publishedAt!)}',
               style: Theme.of(context).textTheme.labelSmall,
             ),
             const SizedBox(

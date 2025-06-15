@@ -8,7 +8,7 @@ class AuthController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   UserPreference pref = UserPreference();
-  UserModel user = UserModel();
+Rx<UserModel> user = UserModel().obs;
   RxList<String> interests = <String>[].obs;
   RxInt maxInterest = 0.obs;
   RxBool isPressedSignin = false.obs;
@@ -32,11 +32,11 @@ class AuthController extends GetxController {
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
-      user = UserModel(
+      user.value = UserModel(
           isLogin: true,
           token: await userCredential.user!.getIdToken(),
           uid: userCredential.user!.uid);
-      pref.saveUser(user);
+      pref.saveUser(user.value);
       interestFetched = await fetchInterests();
       pref.saveInterest(interests.toList());
 
@@ -95,6 +95,6 @@ class AuthController extends GetxController {
   }
 
   bool isUserLoggedIn() {
-    return user.isLogin ?? false;
+    return user.value.isLogin ?? false;
   }
 }

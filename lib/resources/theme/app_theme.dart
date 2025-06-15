@@ -20,7 +20,9 @@ class AppTheme {
       bottomNavigationBarTheme: AppNavigationTheme.lightNavigationTheme,
       brightness: Brightness.light,
       fontFamily: 'Inter',
-      cardTheme: AppCardTheme.lightCardTheme);
+      cardTheme: AppCardTheme.lightCardTheme
+      
+      );
 
   static ThemeData darkTheme = ThemeData(
       dividerTheme:
@@ -35,4 +37,5 @@ class AppTheme {
       textTheme: AppTextTheme.darkTextTheme,
       fontFamily: 'Inter',
       cardTheme: AppCardTheme.darkCardTheme);
+      
 }

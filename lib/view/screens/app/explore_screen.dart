@@ -1,9 +1,8 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
+// import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart' hide CarouselController;
 import 'package:get/get.dart';
 import 'package:newzent/model/news/news_model.dart';
 import 'package:newzent/resources/constants/string/app_string.dart';
-import 'package:newzent/view/widgets/news_card.dart';
 import 'package:newzent/view/widgets/news_tile.dart';
 import 'package:newzent/view_model/controllers/explore_news_controller.dart';
 
@@ -43,20 +42,20 @@ class ExploreScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   children: [
-                    CarouselSlider.builder(
-                      itemCount: 5,
-                      itemBuilder: (context, index, realIndex) {
-                        return NewsCard(news: newsController.topNews[index]);
-                      },
-                      options: CarouselOptions(
-                        height: 235,
-                        viewportFraction: .8,
-                        enlargeStrategy: CenterPageEnlargeStrategy.scale,
-                        enableInfiniteScroll: false,
-                        initialPage: 2,
-                        autoPlay: true,
-                      ),
-                    ),
+                    // CarouselSlider.builder(
+                    //   itemCount: 5,
+                    //   itemBuilder: (context, index, realIndex) {
+                    //     return NewsCard(news: newsController.topNews[index]);
+                    //   },
+                    //   options: CarouselOptions(
+                    //     height: 235,
+                    //     viewportFraction: .8,
+                    //     enlargeStrategy: CenterPageEnlargeStrategy.scale,
+                    //     enableInfiniteScroll: false,
+                    //     initialPage: 2,
+                    //     autoPlay: true,
+                    //   ),
+                    // ),
                     TabBar(
                       isScrollable: true,
                       tabs: [

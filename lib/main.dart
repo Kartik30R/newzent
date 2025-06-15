@@ -18,25 +18,21 @@ class MyApp extends StatelessWidget {
   final BottomNavigationController navigationController =
       Get.put(BottomNavigationController());
 
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      if (navigationController.themeMode.value == null ||
-          authController.user == null) {
-        return const CircularProgressIndicator();
-      }
+@override
+Widget build(BuildContext context) {
+  return Obx(() {
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: navigationController.themeMode.value,
+      initialRoute: authController.isUserLoggedIn()
+          ? AppRoutes.getMain()
+          : AppRoutes.getWelcome(),
+      getPages: AppRoutes.routes,
+    );
+  });
+}
 
-      return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: navigationController.themeMode.value,
-        initialRoute: authController.isUserLoggedIn()
-            ? AppRoutes.getMain()
-            : AppRoutes.getWelcome(),
-        getPages: AppRoutes.routes,
-      );
-    });
-  }
 }
