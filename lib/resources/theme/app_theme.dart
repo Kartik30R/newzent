@@ -20,7 +20,7 @@ class AppTheme {
       bottomNavigationBarTheme: AppNavigationTheme.lightNavigationTheme,
       brightness: Brightness.light,
       fontFamily: 'Inter',
-      cardTheme: AppCardTheme.lightCardTheme
+      // cardTheme: AppCardTheme.lightCardTheme
       
       );
 
@@ -36,6 +36,7 @@ class AppTheme {
       brightness: Brightness.dark,
       textTheme: AppTextTheme.darkTextTheme,
       fontFamily: 'Inter',
-      cardTheme: AppCardTheme.darkCardTheme);
+      // cardTheme: AppCardTheme.darkCardTheme
+      );
       
 }

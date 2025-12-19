@@ -18,78 +18,77 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(AppDimension().defaultMargin),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 100,
+      body: Padding(
+        padding: EdgeInsets.all(AppDimension().defaultMargin),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(
+              height: 100,
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Lets LogIn',
+                style: Theme.of(context).textTheme.titleMedium,
               ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Lets LogIn',
-                  style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Email',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            TextFormField(
+              controller: email,
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              onSaved: (email) {},
+              decoration: const InputDecoration(
+                hintText: "email",
+                prefixIcon: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Icon(Icons.person),
                 ),
               ),
-              const SizedBox(
-                height: 40,
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Password',
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Email',
-                  style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            TextFormField(
+              controller: password,
+              textInputAction: TextInputAction.done,
+              obscureText: true,
+              decoration: const InputDecoration(
+                hintText: "password",
+                prefixIcon: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Icon(Icons.lock),
                 ),
               ),
-              const SizedBox(
-                height: 8,
-              ),
-              TextFormField(
-                controller: email,
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
-                onSaved: (email) {},
-                decoration: const InputDecoration(
-                  hintText: "email",
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Icon(Icons.person),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Password',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              TextFormField(
-                controller: password,
-                textInputAction: TextInputAction.done,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  hintText: "password",
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Icon(Icons.lock),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              ElevatedButton(
+            ),
+           const Spacer(),
+            Container(
+              width: double.infinity,
+              child: ElevatedButton(
                 onPressed: () async {
                   String xemail = email.text.trim();
                   String xpassword = password.text.trim();
@@ -110,11 +109,11 @@ class LoginScreen extends StatelessWidget {
                   "Login".toUpperCase(),
                 ),
               ),
-              const SizedBox(
-                height: 8,
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+          ],
         ),
       ),
     );

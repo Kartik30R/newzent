@@ -15,89 +15,93 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(AppDimension().defaultMargin),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 100,
-              ),
-              Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    ' Get the latest news right away',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  )),
-              const SizedBox(
-                height: 40,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
+      body: Padding(
+        padding: EdgeInsets.all(AppDimension().defaultMargin),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 100,
+            ),
+            Align(
+                alignment: Alignment.topLeft,
                 child: Text(
-                  'Email',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  ' Get the latest news right away',
+                  style: Theme.of(context).textTheme.titleMedium,
+                )),
+            const SizedBox(
+              height: 40,
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Email',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            TextFormField(
+              controller: email,
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                hintText: "email",
+                prefixIcon: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Icon(Icons.person),
                 ),
               ),
-              const SizedBox(
-                height: 8,
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Password',
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
-              TextFormField(
-                controller: email,
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
-                  hintText: "email",
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Icon(Icons.person),
-                  ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            TextFormField(
+              controller: password,
+              textInputAction: TextInputAction.done,
+              obscureText: true,
+              decoration: const InputDecoration(
+                hintText: "password",
+                prefixIcon: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Icon(Icons.lock),
                 ),
               ),
-              const SizedBox(
-                height: 24,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Password',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              TextFormField(
-                controller: password,
-                textInputAction: TextInputAction.done,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  hintText: "password",
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Icon(Icons.lock),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Obx(
-                () => ElevatedButton(
-                  onPressed: () async {
-                    String xemail = email.text.trim();
-                    String xpassword = password.text.trim();
-                    if (xemail.isEmpty || xpassword.isEmpty) {
-                      print('empty fields;');
-                    } else {
-                      authController.isPressedSignin.value = true;
-                      print(authController.isPressedSignin.value);
-                      bool isSigned =
-                          await authController.register(xemail, xpassword);
-                      if (isSigned) {
-                        Get.toNamed(AppRoutes.getInterest());
-                      }
-                    }
-                  },
+            ),
+const Spacer(),
+            Obx(
+              () => Container(
+                width: double.infinity,
+                child: ElevatedButton(
+                 onPressed: () async {
+  String xemail = email.text.trim();
+  String xpassword = password.text.trim();
+
+  if (xemail.isEmpty || xpassword.isEmpty) return;
+
+  authController.isPressedSignin.value = true;
+
+  try {
+    bool isSigned = await authController.register(xemail, xpassword);
+    if (isSigned) {
+      Get.toNamed(AppRoutes.getInterest());
+    }
+  } finally {
+    authController.isPressedSignin.value = false;
+  }
+}
+,
                   style: ButtonStyle(
                       backgroundColor:
                           const WidgetStatePropertyAll(AppColor.primary),
@@ -110,9 +114,9 @@ class SignUpScreen extends StatelessWidget {
                         ),
                 ),
               ),
-              const SizedBox(height: 8),
-            ],
-          ),
+            ),
+            const SizedBox(height: 8),
+          ],
         ),
       ),
     );

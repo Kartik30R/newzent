@@ -8,40 +8,68 @@ class AuthController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   UserPreference pref = UserPreference();
-Rx<UserModel> user = UserModel().obs;
+
+  Rx<UserModel> user = UserModel().obs;
   RxList<String> interests = <String>[].obs;
   RxInt maxInterest = 0.obs;
   RxBool isPressedSignin = false.obs;
 
-  //AUTH METHODS
-  Future<bool> register(String email, String password) async {
-    try {
-      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      await _setUserToken(userCredential);
-      return true;
-    } catch (e) {
-      Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);
-      return false;
+   Future<void> loadUserFromPrefs() async {
+    UserModel savedUser = await pref.getUser();
+    if (savedUser.isLogin == true) {
+      user.value = savedUser;
+      interests.assignAll(await pref.getInterest());
     }
   }
 
+  // AUTH METHODS
+ Future<bool> register(String email, String password) async {
+  try {
+    UserCredential userCredential =
+        await auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    final firebaseUser = userCredential.user!;
+    final token = await firebaseUser.getIdToken();
+
+    user.value = UserModel(
+      isLogin: true,
+      uid: firebaseUser.uid,
+      token: token,
+    );
+
+    pref.saveUser(user.value);
+
+    await _setUserToken(userCredential);
+
+    return true;
+  } catch (e) {
+    Get.snackbar("Error", e.toString(),
+        snackPosition: SnackPosition.BOTTOM);
+    return false;
+  }
+}
+
+
   Future<bool> login(String email, String password) async {
     bool interestFetched = false;
-
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
+        email: email,
+        password: password,
+      );
       user.value = UserModel(
-          isLogin: true,
-          token: await userCredential.user!.getIdToken(),
-          uid: userCredential.user!.uid);
+        isLogin: true,
+        token: await userCredential.user!.getIdToken(),
+        uid: userCredential.user!.uid,
+      );
       pref.saveUser(user.value);
       interestFetched = await fetchInterests();
       pref.saveInterest(interests.toList());
 
       print("interest fetched $interestFetched in login");
-
       return interestFetched;
     } catch (e) {
       Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);
@@ -66,7 +94,7 @@ Rx<UserModel> user = UserModel().obs;
     }
   }
 
-//INTERESTS METHOD
+  // INTERESTS
   Future<bool> fetchInterests() async {
     User? currentUser = auth.currentUser;
     if (currentUser != null) {

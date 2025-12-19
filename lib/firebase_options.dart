@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAbz5psYEBd632WC8F22MDtHD4436oRfJE',
-    appId: '1:875741923980:android:bf251e69e2de855a4f89a9',
-    messagingSenderId: '875741923980',
-    projectId: 'newzent-80c4f',
-    storageBucket: 'newzent-80c4f.appspot.com',
+    apiKey: 'AIzaSyAkW5cYX8WPq9r5HdqPKFabrAkw4pXbdAg',
+    appId: '1:515005098822:android:1db96ae204e2f867509347',
+    messagingSenderId: '515005098822',
+    projectId: 'newzent-prod',
+    storageBucket: 'newzent-prod.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAxPvmhi9-jRZMmLikC2adn6CcdXy00ILU',
-    appId: '1:875741923980:ios:606237e2ddf66eae4f89a9',
-    messagingSenderId: '875741923980',
-    projectId: 'newzent-80c4f',
-    storageBucket: 'newzent-80c4f.appspot.com',
+    apiKey: 'AIzaSyDF72DlJXXz2BIZ4Ar5DnclnqS4iRdiKEk',
+    appId: '1:515005098822:ios:a9d960cd0ffc5f97509347',
+    messagingSenderId: '515005098822',
+    projectId: 'newzent-prod',
+    storageBucket: 'newzent-prod.firebasestorage.app',
     iosBundleId: 'com.example.newzent',
   );
 

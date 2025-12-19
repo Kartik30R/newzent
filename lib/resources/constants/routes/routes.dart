@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:newzent/model/news/news_model.dart';
 import 'package:newzent/view/screens/app/article_screen.dart';
 import 'package:newzent/view/screens/app/explore_screen.dart';
 import 'package:newzent/view/screens/app/feed_screen.dart';
@@ -31,12 +32,19 @@ class AppRoutes {
       name: profile,
       page: () => ProfileScreen(),
     ),
-    GetPage(
-      name: article,
-      page: () => ArticleScreen(
-        news: Get.arguments,
-      ),
-    ),
+ GetPage(
+  name: article,
+  page: () {
+    final args = Get.arguments as Map<String, dynamic>;
+
+    return ArticleScreen(
+      articles: List<Articles>.from(args['articles']),
+      initialIndex: args['index'] as int,
+    );
+  },
+),
+
+
     GetPage(
       name: signUp,
       page: () => SignUpScreen(),

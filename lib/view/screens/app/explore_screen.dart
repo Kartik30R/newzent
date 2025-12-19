@@ -1,10 +1,9 @@
-// import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart' hide CarouselController;
 import 'package:get/get.dart';
 import 'package:newzent/model/news/news_model.dart';
 import 'package:newzent/resources/constants/string/app_string.dart';
-import 'package:newzent/view/widgets/news_tile.dart';
-import 'package:newzent/view_model/controllers/explore_news_controller.dart';
+import 'package:newzent/view/widgets/news_card.dart';
+ import 'package:newzent/view_model/controllers/explore_news_controller.dart';
 
 class ExploreScreen extends StatelessWidget {
   final ExploreNewsController newsController = Get.put(ExploreNewsController());
@@ -36,58 +35,28 @@ class ExploreScreen extends StatelessWidget {
                 "Explore",
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-            ),
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  children: [
-                    // CarouselSlider.builder(
-                    //   itemCount: 5,
-                    //   itemBuilder: (context, index, realIndex) {
-                    //     return NewsCard(news: newsController.topNews[index]);
-                    //   },
-                    //   options: CarouselOptions(
-                    //     height: 235,
-                    //     viewportFraction: .8,
-                    //     enlargeStrategy: CenterPageEnlargeStrategy.scale,
-                    //     enableInfiniteScroll: false,
-                    //     initialPage: 2,
-                    //     autoPlay: true,
-                    //   ),
-                    // ),
-                    TabBar(
-                      isScrollable: true,
-                      tabs: [
-                        const Tab(text: 'Top'),
-                        ...AppString.categories.map((category) {
-                          return Tab(text: category.capitalizeFirst);
-                        }).toList(),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height -
-                          kToolbarHeight +
-                          700, // Adjust height accordingly
-                      child: TabBarView(
-                        controller: tabController,
-                        children: [
-                          _buildNewsList(newsController.topNews, null,
-                              newsController.isLoadingTopNews),
-                          ...AppString.categories.map((category) {
-                            return _buildNewsList(
-                              newsController.getNewsListByCategory(category),
-                              category,
-                              newsController
-                                  .getLoadingStateByCategory(category),
-                            );
-                          }).toList(),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+              bottom: TabBar(
+                isScrollable: true,
+                tabs: [
+                  const Tab(text: 'Top'),
+                  ...AppString.categories.map((category) {
+                    return Tab(text: category.capitalizeFirst);
+                  }).toList(),
+                ],
               ),
+            ),
+            body: TabBarView(
+              controller: tabController,
+              children: [
+                _buildNewsTab(newsController.topNews, null, newsController.isLoadingTopNews),
+                ...AppString.categories.map((category) {
+                  return _buildNewsTab(
+                    newsController.getNewsListByCategory(category),
+                    category,
+                    newsController.getLoadingStateByCategory(category),
+                  );
+                }).toList(),
+              ],
             ),
           );
         },
@@ -95,24 +64,22 @@ class ExploreScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildNewsList(
+  Widget _buildNewsTab(
       RxList<Articles> newsList, String? category, RxBool isLoading) {
     return Obx(() {
       return isLoading.value
           ? const Center(child: CircularProgressIndicator())
           : NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification scrollInfo) {
-                if (scrollInfo.metrics.pixels ==
-                        scrollInfo.metrics.maxScrollExtent &&
+              onNotification: (scrollInfo) {
+                if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
                     !newsController.isFetchingMore.value) {
                   newsController.loadMoreNews(category);
                 }
                 return false;
               },
               child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: newsList.length + 1,
+                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8.0),
+                itemCount: newsList.length + 1, // only +1 for optional loader
                 itemBuilder: (context, index) {
                   if (index == newsList.length) {
                     return newsController.isFetchingMore.value
@@ -122,8 +89,11 @@ class ExploreScreen extends StatelessWidget {
                   final news = newsList[index];
                   return Column(
                     children: [
-                      NewsTile(news: news),
-                      const Divider(height: 32),
+                     NewsCard(
+  news: news,
+  index: index,
+  articles: newsList,
+),
                     ],
                   );
                 },
